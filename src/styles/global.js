@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export const BG_COLOR = '#343336';
 export const BAR_COLOR = '#4e4d52';
@@ -11,12 +11,15 @@ export const ACCENT_COLORS = [
     '#751c53',
     '#c248c0',
     '#7d6e8b',
-    '#bbc6f7'
+    '#bbc6f7',
 ];
 
 export const COMMON_STYLES = StyleSheet.create({
-   text: {
-       color: TEXT_COLOR,
-       fontFamily: 'Helvetica Neue'
-   }
+    pageContainer: {
+
+    },
+    text: {
+        color: TEXT_COLOR,
+        fontFamily: 'Helvetica Neue',
+    },
 });

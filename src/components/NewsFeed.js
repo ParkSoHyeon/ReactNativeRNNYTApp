@@ -2,10 +2,13 @@ import React, { PropTypes, Component } from 'react';
 import {
     ListView,
     StyleSheet,
-    View
+    View,
+    Modal,
+    TouchableOpacity
 } from 'react-native';
 import * as globalStyles from '../styles/global';
 import NewsItem from './NewsItem';
+import SmallText from './SmallText';
 
 export default class NewsFeed extends Component {
     constructor(props) {
@@ -16,8 +19,13 @@ export default class NewsFeed extends Component {
         });
 
         this.state = {
-            dataSource: this.ds.cloneWithRows(props.news)
+            dataSource: this.ds.cloneWithRows(props.news),
+            modalVisible: false
         }
+
+        this.renderRow = this.renderRow.bind(this);
+        this.onModalOpen = this.onModalOpen.bind(this);
+        this.onModalClose = this.onModalClose.bind(this);
     }
 
     render() {
@@ -29,6 +37,7 @@ export default class NewsFeed extends Component {
                     renderRow={this.renderRow}
                     style={this.props.listStyles}
                 />
+                {this.renderModal()}
             </View>
         )
     }
@@ -38,10 +47,42 @@ export default class NewsFeed extends Component {
 
         return (
             <NewsItem
+                onPress={() => this.onModalOpen()}
                 style={styles.newsItem}
                 index={index}
                 {...rowData} />
         )
+    }
+
+    renderModal() {
+        return (
+            <Modal
+                animationType='slide'
+                visible={this.state.modalVisible}
+                onRequestClose={this.onModalClose}
+            >
+                <View style={styles.modalContent}>
+                    <TouchableOpacity
+                        onPress={this.onModalClose}
+                        style={styles.closeButton}
+                        >
+                        <SmallText>Close</SmallText>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
+        )
+    }
+
+    onModalOpen() {
+        this.setState({
+            modalVisible: true
+        })
+    }
+
+    onModalClose() {
+        this.setState({
+            modalVisible: false
+        })
     }
 }
 
@@ -76,5 +117,16 @@ NewsFeed.defaultProps = {
 const styles = StyleSheet.create({
     newsItem: {
         marginBottom: 20
+    },
+    modalContent: {
+        flex: 1,
+        justifyContent: 'center',
+        paddingTop: 20,
+        backgroundColor: globalStyles.BG_COLOR
+    },
+    closeButton: {
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        flexDirection: 'row'
     }
 })
