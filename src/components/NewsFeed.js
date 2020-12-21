@@ -4,7 +4,8 @@ import {
     StyleSheet,
     View,
     Modal,
-    TouchableOpacity
+    TouchableOpacity,
+    WebView
 } from 'react-native';
 import * as globalStyles from '../styles/global';
 import NewsItem from './NewsItem';
@@ -20,7 +21,8 @@ export default class NewsFeed extends Component {
 
         this.state = {
             dataSource: this.ds.cloneWithRows(props.news),
-            modalVisible: false
+            modalVisible: false,
+            modalUrl: ''
         }
 
         this.renderRow = this.renderRow.bind(this);
@@ -47,7 +49,7 @@ export default class NewsFeed extends Component {
 
         return (
             <NewsItem
-                onPress={() => this.onModalOpen()}
+                onPress={() => this.onModalOpen(rowData.url)}
                 style={styles.newsItem}
                 index={index}
                 {...rowData} />
@@ -68,14 +70,19 @@ export default class NewsFeed extends Component {
                         >
                         <SmallText>Close</SmallText>
                     </TouchableOpacity>
+                    <WebView
+                        scalesPageToFit
+                        source={{ uri: this.state.modalUrl }}
+                    />
                 </View>
             </Modal>
         )
     }
 
-    onModalOpen() {
+    onModalOpen(url) {
         this.setState({
-            modalVisible: true
+            modalVisible: true,
+            modalUrl: url
         })
     }
 
